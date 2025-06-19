@@ -7,16 +7,16 @@
         1.  Hook (The Problem): Present the top-level funnel metrics, highlighting the SQL-to-Client conversion bottleneck as the primary issue.
         2.  Diagnosis (The Why): Use a comparative chart to show that the problem is not uniform, but varies by target persona.
         3.  Root Cause Analysis (The How): Visually link each persona's campaign failure to a specific stage in the AIDCA model (Attention, Conviction, Action).
-        4.  Solution (The Fix): Clearly present the three strategic levers for leadership intervention: Targeting, Nurturing, and Measurement.
-        5.  Proof of Concept (The Result): Show early positive results from the experimental "fixer" prompts to build confidence in the proposed strategy.
+        4.  Solution (The Fix): Present strategic levers and add interactive Gemini API buttons to generate email solutions in real-time.
+        5.  Proof of Concept (The Result): Show early positive results from experimental prompts.
 
         Visualization Choices (NO SVG/MERMAID):
-        -   Overall Funnel: Custom HTML/CSS Flow Diagram. Goal: Organize. Justification: Visually represents the flow and drop-offs effectively without external libraries.
-        -   Key KPI (SQL->Client %): "Single Big Number" display. Goal: Inform. Justification: Immediately draws attention to the core problem.
-        -   Campaign Performance: Chart.js Bar Chart. Goal: Compare. Justification: Perfect for comparing the performance of discrete categories (personas) across a shared metric.
-        -   Failure Analysis: HTML/CSS Flow Diagram. Goal: Show relationships. Justification: Clearly links a persona to a problem and a strategic failure without needing complex graphics.
-        -   Recommendations: Styled HTML Cards with Unicode Icons. Goal: Organize. Justification: Clean, clear, and scannable presentation of actionable items.
-        -   Experiment Results: Chart.js Bar Chart. Goal: Compare. Justification: Directly visualizes the positive impact (lift) of the proposed prompt revisions.
+        -   Overall Funnel: Chart.js Bar Chart. Goal: Compare. Justification: Clearly compares actual vs. target numbers.
+        -   Key KPI (SQL->Client %): "Single Big Number" display. Goal: Inform.
+        -   Campaign Performance: Chart.js Bar Chart. Goal: Compare.
+        -   Failure Analysis & AI Generation: HTML/CSS Flow Diagram with interactive buttons. Goal: Show relationships and provide tools.
+        -   Recommendations: Styled HTML Cards. Goal: Organize.
+        -   Experiment Results: Chart.js Bar Chart. Goal: Compare.
         
         CONFIRMATION: No SVG or Mermaid JS was used in this document. All diagrams are built with HTML/CSS and all charts are rendered on HTML Canvas elements via Chart.js.
         
@@ -77,10 +77,14 @@
         .palette-3 { color: #2ca02c; }
         .palette-4 { color: #d62728; }
         .palette-5 { color: #9467bd; }
-        .bg-palette-1 { background-color: #1f77b4; }
-        .bg-palette-2 { background-color: #ff7f0e; }
-        .bg-palette-3 { background-color: #2ca02c; }
-        .bg-palette-4 { background-color: #d62728; }
+        .ai-button {
+            background: linear-gradient(45deg, #6b4c9a, #9467bd);
+            transition: all 0.3s ease;
+        }
+        .ai-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(148, 103, 189, 0.5);
+        }
     </style>
 </head>
 <body class="antialiased text-gray-800">
@@ -134,57 +138,47 @@
             </section>
 
             <section id="failure-analysis" class="mb-20">
-                 <h2 class="text-3xl font-bold main-title mb-4 text-center">Root Cause Analysis</h2>
-                 <p class="text-gray-600 mb-10 text-center max-w-3xl mx-auto">By mapping the data to our messaging strategy, we can decode *why* each funnel is breaking. Each failure corresponds to a specific weakness in our AIDCA-based outreach for that persona.</p>
+                 <h2 class="text-3xl font-bold main-title mb-4 text-center">Root Cause Analysis & AI-Powered Solutions</h2>
+                 <p class="text-gray-600 mb-10 text-center max-w-3xl mx-auto">By mapping data to strategy, we can decode *why* each funnel is breaking. For each diagnosed failure, use the Gemini API to generate a targeted email fix on the spot.</p>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="card p-6 flex flex-col items-center text-center">
-                        <div class="mb-4">
+                        <div class="flex-grow">
                             <p class="font-bold text-lg palette-1">CFO - Construction</p>
-                            <p class="text-sm font-medium text-gray-500">Problem: Message Misfit</p>
+                            <p class="text-sm font-medium text-gray-500 mb-2">Problem: Message Misfit</p>
+                            <p class="font-semibold text-red-600 mb-2">Generic Content</p>
+                            <p class="font-bold text-xl palette-5">ATTENTION STAGE FAILURE</p>
                         </div>
-                        <div class="flow-arrow mb-4">↓</div>
-                        <div class="mb-4">
-                            <p class="font-semibold text-red-600">Generic Content</p>
-                            <p class="text-xs text-gray-500">Leads don't open or engage.</p>
-                        </div>
-                         <div class="flow-arrow mb-4">↓</div>
-                        <div>
-                             <p class="font-bold text-xl palette-5">ATTENTION</p>
-                             <p class="text-sm font-semibold text-gray-500">AIDCA Stage Failure</p>
-                        </div>
+                        <button onclick="generateEmail('cfo')" class="ai-button mt-6 text-white font-bold py-2 px-4 rounded-lg">✨ Generate Email Fix</button>
                     </div>
 
                     <div class="card p-6 flex flex-col items-center text-center">
-                        <div class="mb-4">
+                        <div class="flex-grow">
                             <p class="font-bold text-lg palette-2">CTO - D2C</p>
-                             <p class="text-sm font-medium text-gray-500">Problem: Trust Gap</p>
+                            <p class="text-sm font-medium text-gray-500 mb-2">Problem: Trust Gap</p>
+                            <p class="font-semibold text-red-600 mb-2">Lack of Proof</p>
+                            <p class="font-bold text-xl palette-5">CONVICTION STAGE FAILURE</p>
                         </div>
-                        <div class="flow-arrow mb-4">↓</div>
-                        <div class="mb-4">
-                            <p class="font-semibold text-red-600">Lack of Proof</p>
-                            <p class="text-xs text-gray-500">MQLs click but don't reply.</p>
-                        </div>
-                         <div class="flow-arrow mb-4">↓</div>
-                        <div>
-                             <p class="font-bold text-xl palette-5">CONVICTION</p>
-                              <p class="text-sm font-semibold text-gray-500">AIDCA Stage Failure</p>
-                        </div>
+                        <button onclick="generateEmail('cto')" class="ai-button mt-6 text-white font-bold py-2 px-4 rounded-lg">✨ Generate Email Fix</button>
                     </div>
+
                     <div class="card p-6 flex flex-col items-center text-center">
-                         <div class="mb-4">
+                        <div class="flex-grow">
                             <p class="font-bold text-lg palette-3">COO - Pharma</p>
-                            <p class="text-sm font-medium text-gray-500">Problem: CTA Misalignment</p>
+                            <p class="text-sm font-medium text-gray-500 mb-2">Problem: CTA Misalignment</p>
+                            <p class="font-semibold text-red-600 mb-2">No Urgency</p>
+                            <p class="font-bold text-xl palette-5">ACTION STAGE FAILURE</p>
                         </div>
-                        <div class="flow-arrow mb-4">↓</div>
-                        <div class="mb-4">
-                            <p class="font-semibold text-red-600">No Urgency</p>
-                            <p class="text-xs text-gray-500">SQLs agree but don't sign.</p>
+                        <button onclick="generateEmail('coo')" class="ai-button mt-6 text-white font-bold py-2 px-4 rounded-lg">✨ Generate Email Fix</button>
+                    </div>
+                </div>
+                 <div id="ai-output-container" class="mt-12" style="display: none;">
+                    <div class="card p-6">
+                        <div class="flex justify-between items-center mb-4">
+                             <h3 id="ai-output-title" class="text-xl font-bold text-gray-800"></h3>
+                             <button onclick="copyToClipboard()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-1 px-3 rounded-lg text-sm">Copy</button>
                         </div>
-                        <div class="flow-arrow mb-4">↓</div>
-                        <div>
-                             <p class="font-bold text-xl palette-5">ACTION</p>
-                              <p class="text-sm font-semibold text-gray-500">AIDCA Stage Failure</p>
-                        </div>
+                        <div id="ai-output-content" class="bg-gray-50 p-4 rounded-md text-sm whitespace-pre-wrap font-mono"></div>
+                        <textarea id="copy-helper" style="opacity:0; position:absolute; left: -9999px;"></textarea>
                     </div>
                 </div>
             </section>
@@ -248,18 +242,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-
-    const palette = {
-        blue: '#1f77b4',
-        orange: '#ff7f0e',
-        green: '#2ca02c',
-        red: '#d62728',
-        purple: '#9467bd',
-        brown: '#8c564b',
-        pink: '#e377c2',
-        gray: '#7f7f7f'
-    };
-    
+    const palette = { blue: '#1f77b4', orange: '#ff7f0e', green: '#2ca02c', red: '#d62728', purple: '#9467bd', gray: '#7f7f7f' };
     const wrapLabels = (label, maxLength) => {
         if (typeof label !== 'string' || label.length <= maxLength) return label;
         const words = label.split(' ');
@@ -275,28 +258,19 @@ document.addEventListener('DOMContentLoaded', () => {
         lines.push(currentLine.trim());
         return lines.filter(line => line.length > 0);
     };
-    
     const tooltipTitleCallback = (tooltipItems) => {
         const item = tooltipItems[0];
         if (!item || !item.chart.data.labels) return '';
         let label = item.chart.data.labels[item.dataIndex];
         return Array.isArray(label) ? label.join(' ') : label;
     };
-    
     const commonChartOptions = {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-            legend: {
-                position: 'bottom',
-                labels: {
-                    font: { size: 12 }
-                }
-            },
+            legend: { position: 'bottom', labels: { font: { size: 12 } } },
             tooltip: {
-                callbacks: {
-                    title: tooltipTitleCallback
-                },
+                callbacks: { title: tooltipTitleCallback },
                 backgroundColor: '#0d1f33',
                 titleFont: { size: 14, weight: 'bold' },
                 bodyFont: { size: 12 },
@@ -305,15 +279,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         },
         scales: {
-            x: {
-                grid: { display: false },
-                ticks: { font: { size: 12 } }
-            },
-            y: {
-                grid: { color: '#e5e7eb' },
-                ticks: { font: { size: 12 } },
-                 beginAtZero: true
-            }
+            x: { grid: { display: false }, ticks: { font: { size: 12 } } },
+            y: { grid: { color: '#e5e7eb' }, ticks: { font: { size: 12 } }, beginAtZero: true }
         }
     };
 
@@ -322,27 +289,11 @@ document.addEventListener('DOMContentLoaded', () => {
         data: {
             labels: ['Leads', 'MQLs', 'SQLs', 'Clients'],
             datasets: [
-                {
-                    label: 'Actual',
-                    data: [3500, 1970, 788, 47],
-                    backgroundColor: palette.blue,
-                    borderColor: palette.blue,
-                    borderWidth: 1
-                },
-                {
-                    label: 'Target',
-                    data: [3000, 1800, 900, 90],
-                    backgroundColor: palette.gray,
-                    borderColor: palette.gray,
-                    borderWidth: 1
-                }
+                { label: 'Actual', data: [3500, 1970, 788, 47], backgroundColor: palette.blue },
+                { label: 'Target', data: [3000, 1800, 900, 90], backgroundColor: palette.gray }
             ]
         },
-        options: {
-            ...commonChartOptions,
-            scales: { ...commonChartOptions.scales, y: { ...commonChartOptions.scales.y, type: 'logarithmic' } },
-            plugins: { ...commonChartOptions.plugins, title: { display: true, text: 'Funnel Performance vs. Targets' } }
-        }
+        options: { ...commonChartOptions, scales: { ...commonChartOptions.scales, y: { ...commonChartOptions.scales.y, type: 'logarithmic' } }, plugins: { ...commonChartOptions.plugins, title: { display: true, text: 'Funnel Performance vs. Targets' } } }
     });
 
     new Chart(document.getElementById('personaComparisonChart').getContext('2d'), {
@@ -350,52 +301,93 @@ document.addEventListener('DOMContentLoaded', () => {
         data: {
             labels: [wrapLabels('CFO - Construction', 16), wrapLabels('CTO - D2C', 16), wrapLabels('COO - Pharma', 16)],
             datasets: [
-                {
-                    label: 'MQL Conversion %',
-                    data: [45, 82, 75],
-                    backgroundColor: palette.blue
-                },
-                {
-                    label: 'SQL Conversion % (from MQL)',
-                    data: [12, 30, 55],
-                    backgroundColor: palette.orange
-                },
-                {
-                    label: 'Client Conversion % (from SQL)',
-                    data: [0, 2, 6],
-                    backgroundColor: palette.red
-                }
+                { label: 'MQL Conversion %', data: [45, 82, 75], backgroundColor: palette.blue },
+                { label: 'SQL Conversion % (from MQL)', data: [12, 30, 55], backgroundColor: palette.orange },
+                { label: 'Client Conversion % (from SQL)', data: [0, 2, 6], backgroundColor: palette.red }
             ]
         },
-        options: {
-            ...commonChartOptions,
-            scales: { ...commonChartOptions.scales, y: { ...commonChartOptions.scales.y, title: { display: true, text: 'Conversion Rate (%)' } } },
-            plugins: { ...commonChartOptions.plugins, title: { display: false } }
-        }
+        options: { ...commonChartOptions, scales: { ...commonChartOptions.scales, y: { ...commonChartOptions.scales.y, title: { display: true, text: 'Conversion Rate (%)' } } } }
     });
     
      new Chart(document.getElementById('experimentResultsChart').getContext('2d'), {
         type: 'bar',
         data: {
             labels: ['CTR', 'Booking Rate', 'Final Conversion'],
-            datasets: [{
-                label: 'FIX_ACTION_V1 (Pharma - Scarcity)',
-                data: [12, 8, 1.5],
-                backgroundColor: palette.green,
-            }, {
-                label: 'FIX_CONVICTION_V2 (D2C - Authority)',
-                data: [25, 18, 4],
-                backgroundColor: palette.purple,
-            }]
+            datasets: [{ label: 'FIX_ACTION_V1 (Pharma - Scarcity)', data: [12, 8, 1.5], backgroundColor: palette.green, }, { label: 'FIX_CONVICTION_V2 (D2C - Authority)', data: [25, 18, 4], backgroundColor: palette.purple, }]
         },
-        options: {
-            ...commonChartOptions,
-            scales: { ...commonChartOptions.scales, y: { ...commonChartOptions.scales.y, title: { display: true, text: 'Rate (%)' } } },
-            plugins: { ...commonChartOptions.plugins, title: { display: false } }
-        }
+        options: { ...commonChartOptions, scales: { ...commonChartOptions.scales, y: { ...commonChartOptions.scales.y, title: { display: true, text: 'Rate (%)' } } } }
     });
-
 });
+
+async function generateEmail(persona) {
+    const outputContainer = document.getElementById('ai-output-container');
+    const outputTitle = document.getElementById('ai-output-title');
+    const outputContent = document.getElementById('ai-output-content');
+    
+    outputContainer.style.display = 'block';
+    outputContent.innerHTML = '<div class="flex items-center justify-center h-full"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div><p class="ml-3">Generating...</p></div>';
+    
+    let prompt;
+    let title;
+
+    if (persona === 'cto') {
+        title = "Email Fix for D2C CTO (Trust Gap)";
+        prompt = "You are a world-class growth strategist. A D2C CTO has shown interest in our solution but hasn't replied to book a meeting, indicating a trust gap. Rewrite an email targeting the 'Conviction' stage of the AIDCA framework. Your primary goal is to inject the Cialdini principle of 'Authority'. Do this by including a compelling, data-rich mini-case study about a similar D2C brand directly in the email body. The case study must show a clear, quantifiable ROI. The call to action should be a low-friction invitation to discuss the findings of this case study. Avoid generic sales language.";
+    } else if (persona === 'coo') {
+        title = "Email Fix for Pharma COO (Weak CTA)";
+        prompt = "You are a world-class growth strategist. A Pharma COO is convinced of our value but isn't taking action to sign the contract. Rewrite a final follow-up email targeting the 'Action' stage of the AIDCA framework. Inject the Cialdini principle of 'Scarcity' to create urgency. The new CTA must be tied to a credible, limited-time offer, such as a complimentary onboarding or a special benchmark report that is only available for a limited number of slots this month. The tone should be professional and firm, emphasizing the cost of inaction.";
+    } else { // cfo
+        title = "Email Fix for Construction CFO (Generic Message)";
+        prompt = "You are a world-class growth strategist. Our current emails to Construction CFOs are being ignored due to generic messaging. Rewrite an email from scratch, focusing on the 'Attention' stage of the AIDCA framework. Use the Cialdini principle of 'Liking' by using hyper-specific industry language. The subject line and opening must reference a key financial pain point for construction firms, like 'Project Margin Erosion' or 'Capex Efficiency'. The body must speak their language, mentioning concepts like 'bid-to-win ratios' and 'improving cash flow on long-term projects.' Avoid all generic business growth buzzwords.";
+    }
+    
+    outputTitle.textContent = title;
+
+    try {
+        let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+        const payload = { contents: chatHistory };
+        const apiKey = "";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            throw new Error(`API call failed with status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        
+        let text = 'No content generated. Please try again.';
+        if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
+            text = result.candidates[0].content.parts[0].text;
+        }
+        
+        outputContent.textContent = text;
+    } catch (error) {
+        console.error("Gemini API call failed:", error);
+        outputContent.textContent = "Failed to generate email. Please check the console for errors.";
+    }
+}
+
+function copyToClipboard() {
+    const content = document.getElementById('ai-output-content').textContent;
+    const helper = document.getElementById('copy-helper');
+    helper.value = content;
+    helper.select();
+    document.execCommand('copy');
+    
+    // Simple visual feedback
+    const copyButton = document.querySelector('#ai-output-container button');
+    const originalText = copyButton.textContent;
+    copyButton.textContent = 'Copied!';
+    setTimeout(() => {
+        copyButton.textContent = originalText;
+    }, 2000);
+}
 </script>
 
 </body>
