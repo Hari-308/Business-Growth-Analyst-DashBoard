@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+        INFOGRAPHIC PLAN
+        Narrative Structure:
+        1.  Hook (The Problem): Present the top-level funnel metrics, highlighting the SQL-to-Client conversion bottleneck as the primary issue.
+        2.  Diagnosis (The Why): Use a comparative chart to show that the problem is not uniform, but varies by target persona.
+        3.  Root Cause Analysis (The How): Visually link each persona's campaign failure to a specific stage in the AIDCA model (Attention, Conviction, Action).
+        4.  Solution (The Fix): Clearly present the three strategic levers for leadership intervention: Targeting, Nurturing, and Measurement.
+        5.  Proof of Concept (The Result): Show early positive results from the experimental "fixer" prompts to build confidence in the proposed strategy.
+
+        Visualization Choices (NO SVG/MERMAID):
+        -   Overall Funnel: Custom HTML/CSS Flow Diagram. Goal: Organize. Justification: Visually represents the flow and drop-offs effectively without external libraries.
+        -   Key KPI (SQL->Client %): "Single Big Number" display. Goal: Inform. Justification: Immediately draws attention to the core problem.
+        -   Campaign Performance: Chart.js Bar Chart. Goal: Compare. Justification: Perfect for comparing the performance of discrete categories (personas) across a shared metric.
+        -   Failure Analysis: HTML/CSS Flow Diagram. Goal: Show relationships. Justification: Clearly links a persona to a problem and a strategic failure without needing complex graphics.
+        -   Recommendations: Styled HTML Cards with Unicode Icons. Goal: Organize. Justification: Clean, clear, and scannable presentation of actionable items.
+        -   Experiment Results: Chart.js Bar Chart. Goal: Compare. Justification: Directly visualizes the positive impact (lift) of the proposed prompt revisions.
+        
+        CONFIRMATION: No SVG or Mermaid JS was used in this document. All diagrams are built with HTML/CSS and all charts are rendered on HTML Canvas elements via Chart.js.
+        
+        Color Palette: "Vibrant Corporate" (Custom)
+    -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Growth Engine Diagnostic | DT Fellowship Submission</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .main-title {
+            color: #0d1f33;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e5e7eb;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .kpi-value {
+            color: #d62728;
+            text-shadow: 1px 1px 3px rgba(214, 39, 40, 0.2);
+        }
+        .flow-arrow {
+            font-size: 2rem;
+            color: #6b4c9a;
+            line-height: 1;
+        }
+        .palette-1 { color: #1f77b4; }
+        .palette-2 { color: #ff7f0e; }
+        .palette-3 { color: #2ca02c; }
+        .palette-4 { color: #d62728; }
+        .palette-5 { color: #9467bd; }
+        .bg-palette-1 { background-color: #1f77b4; }
+        .bg-palette-2 { background-color: #ff7f0e; }
+        .bg-palette-3 { background-color: #2ca02c; }
+        .bg-palette-4 { background-color: #d62728; }
+    </style>
+</head>
+<body class="antialiased text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-16">
+            <h1 class="main-title text-4xl md:text-5xl font-extrabold mb-2">Growth Engine Diagnostic</h1>
+            <p class="text-lg text-gray-600">A Strategic Deep Dive into the SQL-to-Client Conversion Funnel</p>
+        </header>
+
+        <main>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 text-center">
+              <div class="card p-4"><p class="text-2xl font-bold main-title">3,500</p><p class="text-gray-500 text-sm">Leads</p></div>
+              <div class="card p-4"><p class="text-2xl font-bold main-title">788</p><p class="text-gray-500 text-sm">SQLs</p></div>
+              <div class="card p-4"><p class="text-2xl font-bold text-red-600">47</p><p class="text-gray-500 text-sm">Clients (FAIL POINT)</p></div>
+              <div class="card p-4"><p class="text-2xl font-bold text-green-600">+108%</p><p class="text-gray-500 text-sm">CTR Lift (D2C Test)</p></div>
+            </div>
+
+            <section id="funnel-overview" class="mb-20">
+                <h2 class="text-3xl font-bold main-title mb-4 text-center">The Primary Bottleneck</h2>
+                <p class="text-gray-600 mb-10 text-center max-w-3xl mx-auto">While top-of-funnel metrics appear healthy, our growth is stalled by a critical failure late in the buyer's journey. The conversion from Sales Qualified Lead (SQL) to Client is significantly below target, representing the single largest point of leverage for growth.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                     <div class="md:col-span-2 card p-6">
+                        <h3 class="font-bold text-xl mb-6 text-gray-700">Funnel Performance vs. Targets</h3>
+                        <div class="overflow-x-auto">
+                            <div class="min-w-[400px] chart-container h-80 md:h-[400px]">
+                                <canvas id="funnelMetricsChart"></canvas>
+                            </div>
+                        </div>
+                     </div>
+                     <div class="card p-8 text-center flex flex-col justify-center h-full">
+                            <h3 class="font-bold text-lg text-gray-700 mb-2">SQL-to-Client Conversion Rate</h3>
+                            <p class="kpi-value text-7xl font-extrabold my-2">6%</p>
+                            <p class="text-gray-500 font-semibold text-lg">Target: 10%</p>
+                            <div class="mt-4 text-sm font-bold bg-red-100 text-red-700 rounded-full px-4 py-1 inline-block">CRITICAL FAILURE POINT</div>
+                     </div>
+                </div>
+            </section>
+
+            <section id="campaign-diagnosis" class="mb-20">
+                <h2 class="text-3xl font-bold main-title mb-4 text-center">Diagnosis: Persona Performance Breakdown</h2>
+                <p class="text-gray-600 mb-10 text-center max-w-3xl mx-auto">The conversion problem isn't uniform; it's specific to how we communicate with each persona. This chart compares the conversion rate at each major stage of the funnel, revealing vastly different journey outcomes and failure points.</p>
+                <div class="card p-6">
+                    <h3 class="font-bold text-xl mb-6 text-gray-700">Funnel Drop-Off Rate by Persona</h3>
+                    <div class="overflow-x-auto">
+                        <div class="min-w-[400px] chart-container">
+                            <canvas id="personaComparisonChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="failure-analysis" class="mb-20">
+                 <h2 class="text-3xl font-bold main-title mb-4 text-center">Root Cause Analysis</h2>
+                 <p class="text-gray-600 mb-10 text-center max-w-3xl mx-auto">By mapping the data to our messaging strategy, we can decode *why* each funnel is breaking. Each failure corresponds to a specific weakness in our AIDCA-based outreach for that persona.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="card p-6 flex flex-col items-center text-center">
+                        <div class="mb-4">
+                            <p class="font-bold text-lg palette-1">CFO - Construction</p>
+                            <p class="text-sm font-medium text-gray-500">Problem: Message Misfit</p>
+                        </div>
+                        <div class="flow-arrow mb-4">↓</div>
+                        <div class="mb-4">
+                            <p class="font-semibold text-red-600">Generic Content</p>
+                            <p class="text-xs text-gray-500">Leads don't open or engage.</p>
+                        </div>
+                         <div class="flow-arrow mb-4">↓</div>
+                        <div>
+                             <p class="font-bold text-xl palette-5">ATTENTION</p>
+                             <p class="text-sm font-semibold text-gray-500">AIDCA Stage Failure</p>
+                        </div>
+                    </div>
+
+                    <div class="card p-6 flex flex-col items-center text-center">
+                        <div class="mb-4">
+                            <p class="font-bold text-lg palette-2">CTO - D2C</p>
+                             <p class="text-sm font-medium text-gray-500">Problem: Trust Gap</p>
+                        </div>
+                        <div class="flow-arrow mb-4">↓</div>
+                        <div class="mb-4">
+                            <p class="font-semibold text-red-600">Lack of Proof</p>
+                            <p class="text-xs text-gray-500">MQLs click but don't reply.</p>
+                        </div>
+                         <div class="flow-arrow mb-4">↓</div>
+                        <div>
+                             <p class="font-bold text-xl palette-5">CONVICTION</p>
+                              <p class="text-sm font-semibold text-gray-500">AIDCA Stage Failure</p>
+                        </div>
+                    </div>
+                    <div class="card p-6 flex flex-col items-center text-center">
+                         <div class="mb-4">
+                            <p class="font-bold text-lg palette-3">COO - Pharma</p>
+                            <p class="text-sm font-medium text-gray-500">Problem: CTA Misalignment</p>
+                        </div>
+                        <div class="flow-arrow mb-4">↓</div>
+                        <div class="mb-4">
+                            <p class="font-semibold text-red-600">No Urgency</p>
+                            <p class="text-xs text-gray-500">SQLs agree but don't sign.</p>
+                        </div>
+                        <div class="flow-arrow mb-4">↓</div>
+                        <div>
+                             <p class="font-bold text-xl palette-5">ACTION</p>
+                              <p class="text-sm font-semibold text-gray-500">AIDCA Stage Failure</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="recommendations" class="mb-20">
+                <h2 class="text-3xl font-bold main-title mb-4 text-center">The Blueprint for Growth</h2>
+                <p class="text-gray-600 mb-10 text-center max-w-3xl mx-auto">The following strategic recommendations provide a clear path forward. We must shift from a uniform approach to precise interventions based on where each campaign is failing.</p>
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                     <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+                        <div class="md:col-span-2">
+                             <h3 class="text-2xl font-bold text-gray-800 mb-4">Leadership Intervention Levers</h3>
+                             <p class="text-gray-600">Our data points to three distinct levers. By focusing our efforts here, we can efficiently repair the funnel and accelerate client acquisition.</p>
+                        </div>
+                        <div class="md:col-span-3 flex flex-col gap-6">
+                            <div class="flex items-start">
+                                <div class="text-3xl mr-4 palette-1">🎯</div>
+                                <div>
+                                    <h4 class="font-bold text-lg">TARGETING</h4>
+                                    <p class="text-sm text-gray-600">For the <strong class="text-gray-800">Construction CFO</strong>, halt the campaign. The messaging is fundamentally broken. We must re-evaluate the persona's core problems before relaunching.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="text-3xl mr-4 palette-2">💬</div>
+                                <div>
+                                    <h4 class="font-bold text-lg">NURTURING</h4>
+                                    <p class="text-sm text-gray-600">For the <strong class="text-gray-800">D2C CTO</strong> & <strong class="text-gray-800">Pharma COO</strong>, deploy revised prompts immediately. Inject 'Authority' (case studies) for D2C and 'Scarcity' (limited offers) for Pharma to fix the specific trust and urgency gaps.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="text-3xl mr-4 palette-3">📈</div>
+                                <div>
+                                    <h4 class="font-bold text-lg">MEASUREMENT</h4>
+                                    <p class="text-sm text-gray-600">Track the revised prompt performance via the new Experimentation Log. Specifically, monitor the 'time-to-close' for SQLs who receive scarcity-based messages to quantify the ROI of this new tactic.</p>
+                                </div>
+                            </div>
+                        </div>
+                     </div>
+                </div>
+            </section>
+            
+            <section id="proof-of-concept" class="mb-16">
+                 <h2 class="text-3xl font-bold main-title mb-4 text-center">Proof of Concept: Early Results</h2>
+                 <p class="text-gray-600 mb-10 text-center max-w-3xl mx-auto">Initial A/B tests of the revised prompts are already showing a significant positive impact. These early results validate our diagnostic approach and demonstrate the power of targeted, psychology-driven messaging.</p>
+                <div class="card p-6">
+                    <h3 class="font-bold text-xl mb-6 text-gray-700">Revised Prompt Experimentation Log</h3>
+                    <div class="overflow-x-auto">
+                        <div class="min-w-[400px] chart-container">
+                            <canvas id="experimentResultsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+        
+        <footer class="text-center mt-16 pt-8 border-t border-gray-300">
+            <p class="text-sm text-gray-500">Project by Hari Krishna Tirukala | DT Fellowship Application</p>
+            <p class="text-xs text-gray-400 mt-2">Note: Data is fictional but modeled to reflect real-world B2B campaign patterns.</p>
+        </footer>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const palette = {
+        blue: '#1f77b4',
+        orange: '#ff7f0e',
+        green: '#2ca02c',
+        red: '#d62728',
+        purple: '#9467bd',
+        brown: '#8c564b',
+        pink: '#e377c2',
+        gray: '#7f7f7f'
+    };
+    
+    const wrapLabels = (label, maxLength) => {
+        if (typeof label !== 'string' || label.length <= maxLength) return label;
+        const words = label.split(' ');
+        const lines = [];
+        let currentLine = '';
+        words.forEach(word => {
+            if ((currentLine + word).length > maxLength) {
+                lines.push(currentLine.trim());
+                currentLine = '';
+            }
+            currentLine += `${word} `;
+        });
+        lines.push(currentLine.trim());
+        return lines.filter(line => line.length > 0);
+    };
+    
+    const tooltipTitleCallback = (tooltipItems) => {
+        const item = tooltipItems[0];
+        if (!item || !item.chart.data.labels) return '';
+        let label = item.chart.data.labels[item.dataIndex];
+        return Array.isArray(label) ? label.join(' ') : label;
+    };
+    
+    const commonChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    font: { size: 12 }
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    title: tooltipTitleCallback
+                },
+                backgroundColor: '#0d1f33',
+                titleFont: { size: 14, weight: 'bold' },
+                bodyFont: { size: 12 },
+                padding: 12,
+                cornerRadius: 4
+            }
+        },
+        scales: {
+            x: {
+                grid: { display: false },
+                ticks: { font: { size: 12 } }
+            },
+            y: {
+                grid: { color: '#e5e7eb' },
+                ticks: { font: { size: 12 } },
+                 beginAtZero: true
+            }
+        }
+    };
+
+    new Chart(document.getElementById('funnelMetricsChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: ['Leads', 'MQLs', 'SQLs', 'Clients'],
+            datasets: [
+                {
+                    label: 'Actual',
+                    data: [3500, 1970, 788, 47],
+                    backgroundColor: palette.blue,
+                    borderColor: palette.blue,
+                    borderWidth: 1
+                },
+                {
+                    label: 'Target',
+                    data: [3000, 1800, 900, 90],
+                    backgroundColor: palette.gray,
+                    borderColor: palette.gray,
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            ...commonChartOptions,
+            scales: { ...commonChartOptions.scales, y: { ...commonChartOptions.scales.y, type: 'logarithmic' } },
+            plugins: { ...commonChartOptions.plugins, title: { display: true, text: 'Funnel Performance vs. Targets' } }
+        }
+    });
+
+    new Chart(document.getElementById('personaComparisonChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: [wrapLabels('CFO - Construction', 16), wrapLabels('CTO - D2C', 16), wrapLabels('COO - Pharma', 16)],
+            datasets: [
+                {
+                    label: 'MQL Conversion %',
+                    data: [45, 82, 75],
+                    backgroundColor: palette.blue
+                },
+                {
+                    label: 'SQL Conversion % (from MQL)',
+                    data: [12, 30, 55],
+                    backgroundColor: palette.orange
+                },
+                {
+                    label: 'Client Conversion % (from SQL)',
+                    data: [0, 2, 6],
+                    backgroundColor: palette.red
+                }
+            ]
+        },
+        options: {
+            ...commonChartOptions,
+            scales: { ...commonChartOptions.scales, y: { ...commonChartOptions.scales.y, title: { display: true, text: 'Conversion Rate (%)' } } },
+            plugins: { ...commonChartOptions.plugins, title: { display: false } }
+        }
+    });
+    
+     new Chart(document.getElementById('experimentResultsChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: ['CTR', 'Booking Rate', 'Final Conversion'],
+            datasets: [{
+                label: 'FIX_ACTION_V1 (Pharma - Scarcity)',
+                data: [12, 8, 1.5],
+                backgroundColor: palette.green,
+            }, {
+                label: 'FIX_CONVICTION_V2 (D2C - Authority)',
+                data: [25, 18, 4],
+                backgroundColor: palette.purple,
+            }]
+        },
+        options: {
+            ...commonChartOptions,
+            scales: { ...commonChartOptions.scales, y: { ...commonChartOptions.scales.y, title: { display: true, text: 'Rate (%)' } } },
+            plugins: { ...commonChartOptions.plugins, title: { display: false } }
+        }
+    });
+
+});
+</script>
+
+</body>
+</html>
